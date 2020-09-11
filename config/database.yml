@@ -1,0 +1,28 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  password: 
+  socket: /tmp/mysql.sock
+
+# development環境だけ書き換えてます。
+development:
+  <<: *default
+  database: my_new_gear_development
+# ここから下はdocker-compose.ymlと対応させてください。
+  username: root　
+  password: password
+  database: docker_development
+  host: db
+
+test:
+  <<: *default
+  database: my_new_gear_test
+
+production:
+  <<: *default
+  database: my_new_gear_production
+  username: root
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  socket: /var/lib/mysql/mysql.sock
